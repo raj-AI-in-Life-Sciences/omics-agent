@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      target: api
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2:-false}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY:-}
+      - VECTOR_BACKEND=${VECTOR_BACKEND:-faiss}
+      - DATABASE_URL=postgresql://omics:omics@postgres:5432/omicsdb
+      - FAISS_INDEX_PATH=/data/faiss/patients.index
+      - FAISS_DB_PATH=/data/faiss/patients.db
+      - EMBEDDING_CACHE_PATH=/data/embeddings/cache.h5
+      - CHECKPOINT_DB_PATH=/data/omics_checkpoints.db
+    volumes:
+      - omics_data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: omics
+      POSTGRES_PASSWORD: omics
+      POSTGRES_DB: omicsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omics -d omicsdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  omics_data:
+  postgres_data:
