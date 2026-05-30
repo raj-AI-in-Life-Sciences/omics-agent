@@ -86,7 +86,7 @@ def fig1_model_comparison():
     plt.tight_layout()
     plt.savefig("paper/figures/fig1_model_comparison.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 1 saved")
+    print("  [OK] Figure 1 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -118,7 +118,7 @@ def fig2_km_strata():
     plt.tight_layout()
     plt.savefig("paper/figures/fig2_km_strata.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 2 saved")
+    print("  [OK] Figure 2 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -148,7 +148,7 @@ def fig3_shap_beeswarm():
     for j, fname in enumerate(feat_ordered):
         y_pos  = T - j - 1
         sv     = shap_ordered[:, j]
-        colors = plt.cm.RdBu_r((sv - sv.min()) / (sv.ptp() + 1e-9))
+        colors = plt.cm.RdBu_r((sv - sv.min()) / (sv.max() - sv.min() + 1e-9))
         ax.scatter(sv, np.full(N, y_pos) + rng.uniform(-0.3, 0.3, N),
                    c=colors, alpha=0.6, s=12)
 
@@ -165,7 +165,7 @@ def fig3_shap_beeswarm():
     plt.tight_layout()
     plt.savefig("paper/figures/fig3_shap_beeswarm.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 3 saved")
+    print("  [OK] Figure 3 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -205,7 +205,7 @@ def fig4_conformal_band():
     plt.tight_layout()
     plt.savefig("paper/figures/fig4_conformal_band.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 4 saved")
+    print("  [OK] Figure 4 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -261,7 +261,7 @@ def fig5_embedding_space():
     plt.tight_layout()
     plt.savefig("paper/figures/fig5_embedding_space.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 5 saved")
+    print("  [OK] Figure 5 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -310,7 +310,7 @@ def fig6_judge_heatmap():
     plt.tight_layout()
     plt.savefig("paper/figures/fig6_judge_heatmap.png", dpi=150, bbox_inches="tight")
     plt.close()
-    print("  ✓ Figure 6 saved")
+    print("  [OK] Figure 6 saved")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -338,7 +338,7 @@ def write_summary():
     }
     with open("results/summary.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print("  ✓ results/summary.json written")
+    print("  [OK] results/summary.json written")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
